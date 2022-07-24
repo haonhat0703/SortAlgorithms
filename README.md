@@ -20,15 +20,18 @@ Một điều nữa là mình rất mong chờ để nhận được nhiều ý 
 
 ```C++
 // algorithm for Selection Sort
-void selectionSort(double *unsortedArray, int size) {
-	for (int index = 0; index < size - 1; index++) {
-		int minIndex = index;
-		for (int findMinIndex = index + 1; findMinIndex < size; findMinIndex++) {
-			if (unsortedArray[findMinIndex] < unsortedArray[minIndex])
-				minIndex = findMinIndex;
-		}	
-		swap(&unsortedArray[minIndex], &unsortedArray[index]);
-	}
+void SelectSort(int a[], int n) {
+	for (int i = 0; i < n - 1; i++)
+	{
+		int minIndex = i;
+		for (int j = i + 1; j < n; j++)// tim vi tri gia tri nho nhat trong khoang sau
+			if (a[j] < a[minIndex])
+				minIndex = j;
+
+		int tmp = a[i];// dua gia tri nho nhat trong khoang sau ve dau
+		a[i] = a[minIndex];
+		a[minIndex] = tmp;
+	} 
 }
 
 ```
@@ -72,20 +75,35 @@ Như vậy, đối với 1 dãy số gồm n phần tử , số lần duyệt qu
 
 ```C++
 // algorithm for Insertion Sort
-void insertionSort(double *unsortedArray, int size) {
-	for (int turn = 1; turn < size; turn++) {
-		double rememberedValue = unsortedArray[turn];
-		int insertionIndex = turn;
+void InsertSort(int a[], int n) {
+	for (int i = 1; i < n; i++) {
+		int tmp = a[i], j = i - 1;
+		while (j >= 0 && tmp < a[j])
+			a[j + 1] = a[j--];
+		a[j + 1] = tmp;
+	} 
+}
+```  
 
-		while (insertionIndex >= 1 && unsortedArray[insertionIndex - 1] > rememberedValue) {
-			unsortedArray[insertionIndex] = unsortedArray[insertionIndex - 1];
-			insertionIndex--;
+
+```C++
+// algorithm for Insertion Sort With Binary Searching
+void InsertSortWithBinarySearch(int a [], int n) {
+	for (int i = 1; i < n; i++) {
+		int tmp = a[i], l = 0, r = i - 1;
+		
+		while (l <= r)// ket hop chat nhi phan tim vi tri thoa trong khoang phia truoc vi da sap xep khoang nay
+		{
+			int mid = (l + r) / 2;
+			if (tmp < a[mid]) r = mid - 1;
+			else l = mid + 1;
 		}
-		unsortedArray[insertionIndex] = rememberedValue;
 
-	}
-
-}  
+		for (int j = i; j > l; j--) 
+				a[j] = a[j - 1];
+		a[l] = tmp;
+	} 
+}
 ```  
 
 **2.2. Ý tưởng của giải thuật :**  
@@ -132,25 +150,16 @@ http://www.geeksforgeeks.org/insertion-sort-for-singly-linked-list/
 
 ```C++
 // algorithm for Selection Sort
-void bubbleSort(double *unsortedArray, int size) {
-	for (int turn = 0; turn < size - 1; turn++) {
-		for (int bubbleindex = 0; bubbleindex < size - 1 - turn; bubbleindex++) {
-			if (unsortedArray[bubbleindex] > unsortedArray[bubbleindex + 1])
-				swap(&unsortedArray[bubbleindex], &unsortedArray[bubbleindex + 1]);
-		}
-	}
+void BubbleSort(int a[], int n) {
+	for (int i = 1; i < n; i++)
+		for (int j = n - 1; j >= i; j--)// chay tu cuoi len nhu noi bot
+			if (a[j - 1] > a[j]) // dieu kien sap xep tang dan 
+			{// Swap vi tri neu khong dung thu tu mong muon
+				int tmp = a[j - 1];
+				a[j - 1] = a[j];
+				a[j] = tmp;
+			}
 }
-
-Hoặc có thể cài đặt theo cách sau : 
-void bubbleSort(double *unsortedArray, int size) {
-	for (int turn = size-1; turn > 0; turn--) {
-		for (int bubbleIndex = 0; bubbleIndex < turn; bubbleIndex++) {
-			if (unsortedArray[bubbleIndex] > unsortedArray[bubbleIndex + 1])
-				swap(&unsortedArray[bubbleIndex], &unsortedArray[bubbleIndex + 1]);
-		}
-	}
-}
-
 ```
 
 **3.2. Ý tưởng của giải thuật :**
@@ -178,57 +187,41 @@ Do phải trải qua (n-1) quá trình lan truyền, với mỗi quá trình lan
 
 **4.Thuật toán Merge Sort (Sắp xếp trộn)**
 
-**4.1. Mã nguồn minh họa (python)**
+**4.1. Mã nguồn minh họa**
 
-```Python
-def mergeSort(unsortedList, left, right) :
-    if(left < right) :
-        middle = int((left + right) / 2)
-        mergeSort(unsortedList, left, middle)
-        mergeSort(unsortedList, middle + 1, right)
-        merge(unsortedList, left, middle, right) # should cast to right type before passing parameters (because default type is float)
+```C++
+void merge (int a[], int left, int middle, int right)
+{
+	int leftSize = middle - left + 1;
+	int	rightSize = right - middle;
 
-		
-		
- # Merge two sorted arrays into an root array
-def merge(unsortedList, left, middle, right) :
-    leftListSize = int(middle - left + 1)
-    rightListSize = int(right - middle)
+	int* L = new int[leftSize];
+	int* R = new int[rightSize];
 
-    leftList = leftListSize * [0]
-    rightList = rightListSize * [0]
+	for (int i = 0; i < leftSize; i++) L[i] = a[i + left];
+	for (int i = 0; i < rightSize; i++) R[i] = a[i + middle + 1];
 
-    for index in range(0, leftListSize) :
-        leftList[index] = unsortedList[left + index]
+	int i = 0, j = 0, k = left;
+	while (i < leftSize && j < rightSize)
+		a[k++] = (L[i] < R[j]) ? L[i++] : R[j++];
 
-    for index in range(0, rightListSize) :
-        rightList[index] = unsortedList[middle + 1 + index]
+	while (i < leftSize)
+		a[k++] = L[i++];
+	while (j < rightSize)
+		a[k++] = R[j++];
 
-    leftListIndex = 0
-    rightListIndex = 0
-    mainListIndex = left
-    while ((leftListIndex < leftListSize) and (rightListIndex < rightListSize)) :
-        if(leftList[leftListIndex] < rightList[rightListIndex]) :
-            unsortedList[mainListIndex] = leftList[leftListIndex]
-            leftListIndex += 1
-        else :
-            unsortedList[mainListIndex] = rightList[rightListIndex]
-            rightListIndex += 1
-        mainListIndex += 1
+	delete[] L;
+	delete[] R;
+}
 
-    if(leftListIndex < leftListSize) :
-        for index in range(leftListIndex, leftListSize) :
-            unsortedList[mainListIndex] = leftList[index]
-            mainListIndex += 1
-
-    if(rightListIndex < rightListSize) :
-        for index in range(rightListIndex, rightListSize) :
-            unsortedList[mainListIndex] = rightList[index]
-            mainListIndex += 1
-
-    del leftList[:]
-    del rightList[:]
-    
+void MergeSort(int a[], int left, int right) {
+	if (left < right) {
+		int middle = (left + right) / 2;
+		MergeSort(a, left, middle);
+		MergeSort(a, middle + 1, right);
+		merge(a, left, middle, right);
+	}
+}    
 ```
     
 **4.2. Ý tưởng của giải thuật :** 
@@ -275,38 +268,24 @@ Từ công thức trên + áp dụng với Định lý Thợ rút gọn (Trang 4
 **5.1. Mã nguồn minh họa :**
 
 ```C++
- void updateHeapAt(double *heapedArray, int size, int updatedPosition) {
-	int largestIndex = updatedPosition; // index of the largest element
-	int leftChildIndex = largestIndex * 2 + 1;
-	int rightChildIndex = largestIndex * 2 + 2;
-	// Check if the value of any one of its two children has larger than the largest value saved in the parent variable largestIndex 
-	if (leftChildIndex < size && heapedArray[leftChildIndex] > heapedArray[largestIndex])
-		largestIndex = leftChildIndex;
-		
-	if (rightChildIndex < size && heapedArray[rightChildIndex] > heapedArray[largestIndex])
-		largestIndex = rightChildIndex;
-
-	// if having no change in variable largestIndex, it stops and doesn't call the recursive function
-	if (largestIndex != updatedPosition) {
-		// when the largest value is at one of its two children, carry out the swap and update the heap at a lower level
-		swap(&heapedArray[updatedPosition], &heapedArray[largestIndex]);
-		updateHeapAt(heapedArray, size, largestIndex);
-	}
+ void heapify(int a[], int n, int i) {
+	int max = i, l = i*2 + 1, r = i*2 + 2;// khoi tao vt max, nut trai va nut phai cua node hien tai dang kiem tra
+	if (l < n && a[l] > a[max]) max = l;// tim vi tri max
+	if (r < n && a[r] > a[max]) max = r;// tim vi tri max
+	if (max != i) {
+		swap(a[i], a[max]);// doi cho phan tu lon nhat
+		heapify(a, n, max);// vun lai dong phia duoi
+	} 
 }
 
-void heapSort(double *unsortedArray, int size) {
-	// build the new max heap from an unsorted array
-	for (int buildHeapIndex = (size / 2) - 1; buildHeapIndex >= 0; buildHeapIndex--) {
-		updateHeapAt(unsortedArray, size, buildHeapIndex);
-	}
+void HeapSort(int a[], int n) {
+	for (int i = n / 2 - 1; i >= 0; i--)
+		heapify(a, n, i);// vun lai tung dinh
 
-	// After creating the maximum heap, it is the high time for converting from the max heap to ascending sorted array
-	for (int sizeOfUpdatedHeap = size - 1; sizeOfUpdatedHeap >= 1; sizeOfUpdatedHeap--) {
-		// Swap between the first element and the last element in the heap to move gradually the largest element to the end of the array
-		swap(&unsortedArray[0], &unsortedArray[sizeOfUpdatedHeap]);
-		// After swapping the two elements above, it is necessary to update the remaining heap
-		updateHeapAt(unsortedArray, sizeOfUpdatedHeap, 0);
-	}
+	for (int i = n - 1; i > 0; i--) {// loai bo lan luot cac phan tu cuoi ra khoi heap
+		swap(a[0], a[i]);// doi vi tri phan tu max ve cuoi
+		heapify(a, i, 0);// vun lai dong 
+	} 
 }
 ```
 
@@ -356,110 +335,22 @@ Như vậy, độ phức tạp của giải thuật Heap Sort là : `O(n.log(n))
 **6. Thuật toán Quick Sort (Sắp xếp nhanh)**
 
 **6.1. Mã nguồn minh họa :** 
-```Java
-    public static void swap(double[] unsortedArray, int index1, int index2) {
-        double intermediate = unsortedArray[index1];
-        unsortedArray[index1] = unsortedArray[index2];
-        unsortedArray[index2] = intermediate;
-    }
-    
-    
-    // Partition with the first element as the pivot
-    public static int firstPivotPartition(double[] unsortedArray, int left, int right) {
-        int lastOfFirstPartitionIndex = left;
-        int firstOfSecondPartitionIndex = right + 1;
-        double pivot = unsortedArray[left];
-        
-        while(lastOfFirstPartitionIndex < firstOfSecondPartitionIndex) {
-            ++lastOfFirstPartitionIndex;
-            while((lastOfFirstPartitionIndex <= right) && (unsortedArray[lastOfFirstPartitionIndex] <= pivot))
-                lastOfFirstPartitionIndex++;
-            
-            --firstOfSecondPartitionIndex;
-            while((firstOfSecondPartitionIndex > left) && (unsortedArray[firstOfSecondPartitionIndex] > pivot)) 
-                firstOfSecondPartitionIndex--;
-            
-            if(lastOfFirstPartitionIndex <= right) // avoid arising the exception ArrayIndexOutOfBoundsException when lastOfFirstPartitionIndex > right
-                swap(unsortedArray, lastOfFirstPartitionIndex, firstOfSecondPartitionIndex);
-        }
-        if(lastOfFirstPartitionIndex <= right) // avoid arising the exception ArrayIndexOutOfBoundsException when lastOfFirstPartitionIndex > right
-            swap(unsortedArray, lastOfFirstPartitionIndex, firstOfSecondPartitionIndex);
-        swap(unsortedArray, firstOfSecondPartitionIndex, left);
-        
-        return firstOfSecondPartitionIndex;
-    }
-    
-    
-    // Partition with the middle element as the pivot
-    public static int middlePivotPartition(double[] unsortedArray, int left, int right) {
-        int middle = (left + right) / 2;
-        swap(unsortedArray, middle, left);
-        double pivot = unsortedArray[left];
-        int lastOfFirstPartitionIndex = left + 1;
-        int firstOfSecondPartitionIndex = right;
-  
-        while(lastOfFirstPartitionIndex <= firstOfSecondPartitionIndex) { // must have sign '=' when sorting an array that contains 2 elements
-            
-            while((lastOfFirstPartitionIndex <= firstOfSecondPartitionIndex) && (unsortedArray[lastOfFirstPartitionIndex] <= pivot))
-                lastOfFirstPartitionIndex++;
-            
-            while(unsortedArray[firstOfSecondPartitionIndex] > pivot) 
-                firstOfSecondPartitionIndex--;
-                 
-            if(lastOfFirstPartitionIndex <= firstOfSecondPartitionIndex) {
-                swap(unsortedArray, lastOfFirstPartitionIndex, firstOfSecondPartitionIndex);
-                ++lastOfFirstPartitionIndex;
-                --firstOfSecondPartitionIndex;
-            }
-        }
-        swap(unsortedArray, left, firstOfSecondPartitionIndex);
-
-        return firstOfSecondPartitionIndex;
-    }
-    
-    
-    // partition with the last element as the pivot
-    public static int lastPivotPartition(double[] unsortedArray, int left, int right) {
-        double pivot = unsortedArray[right];
-        int lastOfFirstPartition = left - 1;
-        
-        for(int lastOfSecondPartition = left; lastOfSecondPartition <= right - 1; lastOfSecondPartition++ ) {
-            if(unsortedArray[lastOfSecondPartition] <= pivot) {
-                lastOfFirstPartition++;
-                swap(unsortedArray, lastOfFirstPartition, lastOfSecondPartition);
-            }
-        }
-        swap(unsortedArray, lastOfFirstPartition + 1, right);
-        
-        return lastOfFirstPartition + 1;
-    }
-    
-    // Quick Sort algorithm using the first element as the pivot
-    public static void firstQuickSort(double[] unsortedArray, int left, int right) {
-        if(left < right) {
-            int pointOfPartition = firstPivotPartition(unsortedArray, left, right);
-            firstQuickSort(unsortedArray, left, pointOfPartition - 1);
-            firstQuickSort(unsortedArray, pointOfPartition + 1, right);
-        }
-    }    
-
-     // Quick Sort algorithm using the middle element as the pivot
-    public static void middleQuickSort(double[] unsortedArray, int left, int right) {
-        if(left < right) {
-            int pointOfPartition = middlePivotPartition(unsortedArray, left, right);
-            middleQuickSort(unsortedArray, left, pointOfPartition - 1);
-            middleQuickSort(unsortedArray, pointOfPartition + 1, right);
-        }
-    }
-    
-    // Quick Sort algorithm using the last element as the pivot
-    public static void lastQuickSort(double[] unsortedArray, int left, int right) {
-        if(left < right) {
-            int pointOfPartition = lastPivotPartition(unsortedArray, left, right);
-            lastQuickSort(unsortedArray, left, pointOfPartition - 1);
-            lastQuickSort(unsortedArray, pointOfPartition + 1, right);
-        }
-    }
+```C++
+   void QuickSort(int a[], int left, int right) {
+	int i = left, j = right, x = a[(left + right) / 2];
+	while (i < j) {
+		while (a[i] < x) i++;
+		while (a[j] > x) j--;
+		if (!(i>j)) {
+			int tmp = a[i];
+			a[i] = a[j];
+			a[j] = tmp;
+			i++, j--;
+		}
+	} 
+	if (i < right) QuickSort(a, i, right);
+	if (left < j) QuickSort(a, left, j);
+}
 ```
 
 **6.2. Tư tưởng của giải thuật** 
@@ -510,38 +401,30 @@ Vấn đề của thao tác lựa chọn Pivot :
 **7.1 Mã nguồn minh họa :**
 
 ```C++
-void countingSort(char *unsortedString) {
-	int lenOfString = strlen(unsortedString);
-	// create a new array for couting the number of occurences of a character
-	int countingArray[RANGE];
-	char *temporaryString = new char[lenOfString + 1]; // plus 1 to contain a NULL character at the end of string
-	memset(temporaryString, '\0', lenOfString);
-	memset(countingArray, 0, sizeof(countingArray)); // same as :  int countingArray[RANGE] = { 0 };
-	
-	// count the number of occurences of a character
-	for (int charIndex = 0; charIndex < lenOfString; charIndex++) {
-		++countingArray[unsortedString[charIndex]];
-	}
+void CountingSort(int a[], int n) {
+	int tmp[N];
+	int minn = a[0], maxx = a[0];
 
-	// modify the array above : each value of an element contains its actual position in the sorted string
-	for (int index = 1; index < RANGE; index++) {
-		countingArray[index] += countingArray[index - 1];
-	}
-	// From the above array, create a new string arranged in alphabetical order
-	char currentChar;
-	for (int charIndex = 0; charIndex < lenOfString; charIndex++) {
-		currentChar = unsortedString[charIndex];
-		temporaryString[countingArray[currentChar] - 1] = currentChar;
-		--countingArray[currentChar];
-	}
-	temporaryString[lenOfString] = '\0';
-	// copy all of the characters from the temporary string to the original string
-	//strcpy_s(unsortedString, strlen(temporaryString), temporaryString); // ? don't work???
+	for (int i = 1; i < n; i++)// tim min max cua cac phan tu trong mang
+		minn = min(minn, a[i]), maxx = max(maxx, a[i]);
 
-	for (int charIndex = 0; charIndex < lenOfString; charIndex++) {
-		unsortedString[charIndex] = temporaryString[charIndex];
-	}
-	unsortedString[lenOfString] = '\0';
+	int k = maxx - minn + 1;// khoang gia tri trai dai tu 0 den k - 1
+
+	int cnt[N];
+	for (int i = 0; i < k; i++) 
+			cnt[i] = 0;// khoi tao gia tri dem phan phoi trong khoang = 0
+
+	for (int i = 0; i < n; i++) 
+			cnt[a[i] - minn]++;// thuc hien viec den phan phoi so luong phan tu bang cach quy ve khoang 0 den k - 1
+
+	for (int i = 1; i < k; i++)
+			cnt[i] += cnt[i - 1];// cong don mang
+
+	for (int i = 0; i < n; i++)
+			tmp[--cnt[a[i] - minn]] = a[i];// xac dinh lai vi tri chinh xac, co the chay tu n - 1 den 0 de dam bao tinh on dinh cua thuat toan sx 
+	 
+	for (int i = 0; i < n; i++)
+		a[i] = tmp[i];// cap nhap mang sau khi sap xep cho mang chinh 
 }
 
 ```
@@ -573,55 +456,37 @@ Thủ tục countingSort yêu cầu duyệt qua n phần tử từ dãy số g�
 
 **8.1. Mã nguồn minh họa**
 ```C++
-int maximum(int *unsortedArray, int size) {
-	int maximumValue = unsortedArray[0];
-	for (int index = 1; index < size; index++) {
-		if (maximumValue < unsortedArray[index])
-			maximumValue = unsortedArray[index];
-	}
-
-	return maximumValue;
-}
-
-void countingSort(int *unsortedArray, int size, int divisionUnit) {
-	int countingKeysArray[10] = { 0 };
-	int *sortedArray = new int[size];
+void countingSort(int a[], int n, int div) {
+	int countingKeys[10] = {0};
+	int* res = new int[n];
 	int key;
 
-	// Count the number of occurence of each key
-	for (int index = 0; index < size; index++) {
-		key = (unsortedArray[index] / divisionUnit) % 10;
-		++countingKeysArray[key];
-	}
+	for (int i = 0; i < n; i++) {
+		key = (a[i] / div) % 10;
+		countingKeys[key]++;
+	} 
 
-	// Determine actual positions of all elements in the array
-	for (int key = 1; key < 10; key++) {
-		countingKeysArray[key] += countingKeysArray[key - 1];
-	}
-	
-	// Create an new sorted array from the above array
-	// Must go down from size - 1 to 0 because it helps to maintain
-	//relative stability of the sorted array at the previous times
-	for (int index = size - 1; index >= 0; index--) {
-		key = (unsortedArray[index] / divisionUnit) % 10;
-		sortedArray[countingKeysArray[key] - 1] = unsortedArray[index];
-		--countingKeysArray[key];
-	}
+	for (int i = 1; i < 10; i++)
+		countingKeys[i] += countingKeys[i - 1];
 
-	// Save these sorted sequences to the original array 
-	for (int index = 0; index < size; index++) {
-		unsortedArray[index] = sortedArray[index];
-	}
-	delete [] sortedArray;
+	for (int i = n - 1; i >= 0; i--) {// chay tu cuoi len de dat duoc su on dinh cua thuat toan sap xep
+		key = (a[i] / div) % 10;
+		res[--countingKeys[key]] = a[i];
+	} 
+
+	for (int i = 0; i < n; i++)
+		a[i] = res[i];
+
+	delete[] res;
 }
-void radixSort(int *unsortedArray, int size) {
-	// Find the maximum value in the unsorted array
-	int maximumValue = maximum(unsortedArray, size);
 
-	// Devoke the countingSort function for each division unit (1, 10, 100, 1000 ... | divisionUnit < maximumValue)
-	for (int divisionUnit = 1; divisionUnit <= maximumValue; divisionUnit *= 10) {
-		countingSort(unsortedArray, size, divisionUnit);
-	}
+void RadixSort(int a[], int n) {
+	int maxx = a[0];
+	for (int i = 1; i < n; i++) 
+		maxx = max(a[i], maxx);
+
+	for (int divisionUnit = 1; divisionUnit <= maxx; divisionUnit *= 10)// chay co so
+		countingSort(a, n, divisionUnit);// sort theo co so
 }
 
 ```
@@ -645,33 +510,28 @@ Giải thuật sắp xếp theo cơ số 10 với tư tưởng chính sau:
 
 **9.1. Mã nguồn minh họa**
 ```C++
-void bucketSort(double *unsortedArray, int size) {
-	vector<double> *buckets = new vector<double>[size];
+void BucketSort(double a[], int n) {
 	
-	// put elements into proper buckets
-	int bucketIndex;
-	for (int index = 0; index < size; index++) {
-		bucketIndex = size * unsortedArray[index];
-		buckets[bucketIndex].push_back(unsortedArray[index]);
-	}
+	//1) Create empty buckets 
+	vector<double> b[N];
 
-	// using insertion algorithm to sort elements in each bucket ascendingly 
-	for (int bucketIndex = 0; bucketIndex < size; bucketIndex++) {
-		sort(buckets[bucketIndex].begin(), buckets[bucketIndex].end());
-	}
+	//2) Put array elements in different buckets
+	for (int i = 0; i < n; i++) {
+		int bi = int (a[i] * n);// Index in bucket
+		b[bi].pb(a[i]);
+	} 
 
-	// Copy elements from buckets into the original array
-	int originalArrayIndex = 0;
-	int sizeOfEachBucket;
-	for (int bucketIndex = 0; bucketIndex < size; bucketIndex++) {
-		sizeOfEachBucket = buckets[bucketIndex].size();
-		for (int insideBucketIndex = 0; insideBucketIndex < sizeOfEachBucket; insideBucketIndex++) {
-			unsortedArray[originalArrayIndex] = buckets[bucketIndex][insideBucketIndex];
-			++originalArrayIndex;
-		}
-	}
+	//3) Sort individual buckets
+	for (int i = 0; i < n; i++)
+		sort(b[i].begin(), b[i].end());// goi ham sap xep co san trong thu vien <(^-^)>
 
+	//4) Concatenate all buckets into arr
+	int index = 0;
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < b[i].size(); j++)
+			a[index++] = b[i][j];
 }
+
 ```
 
 **9.2. Ý tưởng của giải thuật**
@@ -699,26 +559,20 @@ Như vậy độ phức tạp của bài toán : `O(n)`
 
 **10.1 Mã nguồn minh họa** 
 ```C++
-void shellSort(double *unsortedArray, int size) {
-	int interval = 1;
-	int comparingIndex, currentIndex;
-	double comparingValue;
+void ShellSort(int a[], int n) {
+	int j, interval = 1;// buoc nhay
+	
+	while (interval <= (n / 3)) 
+			interval = interval * 3 + 1;// toi uu cua buoc nhay nhat co the
 
-	// Using Knuth's Formular to calculate the interval ( is initialized by 1)
-	while (interval <= (size / 3)) {
-		interval = interval * 3 + 1;
-	}
-
-	// 'Interval' specifies the distance in comparison. This algorithm's idea is similar to Insertion Algorithm, but with a specified distance for comparing
-	while (interval > 0) {
-		for (comparingIndex = interval; comparingIndex < size; comparingIndex++) {
-			comparingValue = unsortedArray[comparingIndex];
-			for (currentIndex = comparingIndex; currentIndex >= interval && unsortedArray[currentIndex - interval] > comparingValue; currentIndex -= interval) {
-				unsortedArray[currentIndex] = unsortedArray[currentIndex - interval];
-			}
-			unsortedArray[currentIndex] = comparingValue;
+	while (interval > 0)
+	{
+		for (int i = interval; i < n; i++) {// su dung chen truc tiep de dam bao su on dinh cua thuat toan
+			int comp = a[i];
+			for (j = i; j >= interval && a[j - interval] > comp; j -= interval)
+				a[j] = a[j - interval];
+			a[j] = comp;
 		}
-		// reduce the comparing distance until it equals to zero 
 		interval = (interval - 1) / 3;
 	}
 }
@@ -746,39 +600,31 @@ Dù đã có sự cải tiến tuy nhiên độ phức tạp của thuật toán
 **11.1. Mã nguồn minh họa :**
 
 ```C++
-void combSort(double *unsortedArray, int size) {
-	int startingPointOfGap = size; // means first point of sequences is compared
-	bool hasSwapped = true; // keep track of an array until it is sorted ascendingly (means have not any swapping in the array comparison process)
-	// when 2 conditions occur simultaneously : 
-	//not have any swapping ( means the arrays has been sorted successfully) 
-	// and startingPointOfGap == 1 (this condition can not ignore, when this variable equals to 1, it will waits hasSwapped variable until that variable equals to false to stop while loop)
-	while (startingPointOfGap != 1 || hasSwapped == true) {
-		startingPointOfGap = getNextGap(startingPointOfGap); // shrink gradually the gap
-		hasSwapped = false;
-		for (int comparingIndex = startingPointOfGap; comparingIndex < size; comparingIndex++) {
-			if (unsortedArray[comparingIndex] < unsortedArray[comparingIndex - startingPointOfGap]) {
-				swap(&unsortedArray[comparingIndex], &unsortedArray[comparingIndex - startingPointOfGap]);
-				hasSwapped = true;
-			}
-		}
-
-	}
-
-}
-
 int getNextGap(int gap) {
-	// The gap will be shinked by the following formular (based on practical experience)
-	gap = (gap * 10) / 13;
+	gap = gap * 10 / 13;
 	if (gap < 1)
-		return 1;
+			return 1;
 	return gap;
 }
 
-// swap two values
-void swap(double *num1, double *num2) {
-	double intermediateValue = *num1;
-	*num1 = *num2;
-	*num2 = intermediateValue;
+void CompSort(int a[], int n) {
+	int gap = n;
+	bool swapped = true;
+
+	while (gap != 1 || swapped) {
+		gap = getNextGap(gap);
+		swapped = false;
+
+		for (int i = 0; i < n - gap; i++)
+			if (a [i] > a[i + gap])
+			{// doi cho va danh dau da thuc hien swap
+				int tmp = a[i];
+				a[i] = a[i + gap];
+				a[i + gap] = tmp;
+				swapped = true;
+			}
+	} 
+	 
 }
 ```
 **11.2. Ý tưởng của giải thuật :**  
@@ -802,37 +648,24 @@ Giải thuật này là một sự cải tiến cho giải thuật Sắp xếp N
 **12.1. Mã nguồn minh họa**
 
 ```C++
-void pigeonHoleSort(int *unsortedArray, int size) {
-	// Find the maximum and minimum in the original array
-	int maxValue = unsortedArray[0], minValue = unsortedArray[0];
-	for (int index = 0; index < size; index++) {
-		if (maxValue < unsortedArray[index]) 
-			maxValue = unsortedArray[index];		
-		if (minValue > unsortedArray[index]) 
-			minValue = unsortedArray[index];		
-	}
+void PigeonHoleSort(int a[], int n) {
+	int maxx = a[0], minn = a[0];
+	for (int i = 1; i < n; i++) 
+		maxx = max(a[i], maxx), minn = min(a[i], minn);
 
-	// Calculate the maximum range as following formular 
-	int range = maxValue - minValue + 1;
-	vector<int> *holes = new vector<int>[range]; // create new holes to put the birds there
-	int pigeonValue;
-	// put birds into proper cages
-	for (int pigeonIndex = 0; pigeonIndex < size; pigeonIndex++) {
-		pigeonValue = unsortedArray[pigeonIndex];
-		holes[pigeonValue - minValue].push_back(pigeonValue);
-	}
-	// From the pigeon cages, put those pigeons into original array ascendingly 
-	int originalArrayIndex = 0;
-	for (int holeIndex = 0; holeIndex < range; holeIndex++) {
-		vector<int>::iterator insideHolePointer;
-		for (insideHolePointer = holes[holeIndex].begin(); insideHolePointer != holes[holeIndex].end(); ++insideHolePointer) {
-			unsortedArray[originalArrayIndex] = *insideHolePointer;
-			++originalArrayIndex;
-		}
-	}
+	int range = maxx - minn + 1;
+	vector<int> *holes = new vector<int> [range];
+
+	for (int i = 0; i < n; i++)
+		holes[a[i] - minn].push_back(a[i]);
+	
+	int index = 0;
+
+	for (int i = 0; i < range; i++)
+		for (int j = 0; j < holes[i].size(); j++)
+			a[index++] = holes[i][j];
 
 	delete[] holes;
-
 }
 ```
 **12.2. Ý tưởng của thuật toán :**
