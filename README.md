@@ -38,17 +38,17 @@ void SelectSort(int a[], int n) {
 
 **1.2	Ý tưởng giải thuật** 
 
-Với một mảng số ban đầu chưa được sắp xếp gồm size phần tử. Ý tưởng của thuật toán được mô tả thông qua các bước chính như sau : 
-+ Chọn 1 phần tử đầu tiên của dãy số, giả sử phần tử này là nhỏ nhất, sau đó lưu lại chỉ số phần tử đó
-+ Duyệt để so sánh phần tử nhỏ nhất này với các phần tử còn lại (tức các phần tử tiếp theo của dãy số). Nếu phát hiện có bất kỳ phần tử nào nhỏ hơn phần tử cần so sánh, tiến hành thay đổi giá trị của chỉ số lưu trữ phần tử nhỏ nhất
-+ Sau khi duyệt xong toàn bộ mảng, kết quả chúng ta tìm được đó là : vị trí (chỉ số) của phần tử nhỏ nhất trong mảng đó. Lúc này, thực hiện hoán đổi vị trí của : phần tử đầu tiên trong mảng và vị trí của phần tử nhỏ nhất (đã xác định tử bước trên)
-+ Sau khi hoán đổi, phần tử nhỏ nhất sẽ luôn nằm “cố định” ở đầu mảng và phần tử này sẽ không còn đóng góp vai trò nào cho những lần sắp xếp tiếp theo. Do phần tử đầu tiên đã cố định, quá trình sắp xếp chỉ còn tác động lên size - 1 tiếp theo (không xét phần tử thứ nhất). Và thực hiện lặp lại một cách tương tự quá trình trên từ bước 1 tới bước cuối cùng … Sau mỗi quá trình lặp lại đó, ta sẽ lần lượt xác định và cố định ra được phần tử nhỏ thứ 2, phần tử nhỏ thứ 3 …, phần tử nhỏ thứ size – 1. Tới đây giải thuật kết thúc !  
+Với một mảng số ban đầu chưa được sắp xếp gồm n phần tử. Ý tưởng của thuật toán được mô tả thông qua các bước chính như sau : 
++ Chọn 1 phần tử đầu tiên của dãy số, giả sử phần tử này là nhỏ nhất, sau đó lưu lại chỉ số phần tử đó.
++ Duyệt để so sánh phần tử nhỏ nhất này với các phần tử còn lại (tức các phần tử tiếp theo của dãy số). Nếu phát hiện có bất kỳ phần tử nào nhỏ hơn phần tử cần so sánh, tiến hành thay đổi giá trị của chỉ số lưu trữ phần tử nhỏ nhất.
++ Sau khi duyệt xong toàn bộ mảng, kết quả chúng ta tìm được đó là: vị trí (chỉ số) của phần tử nhỏ nhất trong mảng đó. Lúc này, thực hiện hoán đổi vị trí của : phần tử đầu tiên trong mảng và vị trí của phần tử nhỏ nhất (đã xác định tử bước trên).
++ Sau khi hoán đổi, phần tử nhỏ nhất sẽ luôn nằm “cố định” ở đầu mảng và phần tử này sẽ không còn đóng góp vai trò nào cho những lần sắp xếp tiếp theo. Do phần tử đầu tiên đã cố định, quá trình sắp xếp chỉ còn tác động lên n - 1 tiếp theo (không xét phần tử thứ nhất). Và thực hiện lặp lại một cách tương tự quá trình trên từ bước 1 tới bước cuối cùng … Sau mỗi quá trình lặp lại đó, ta sẽ lần lượt xác định và cố định ra được phần tử nhỏ thứ 2, phần tử nhỏ thứ 3 …, phần tử nhỏ thứ n – 1. Tới đây giải thuật kết thúc !  
 
 **1.3	Độ phức tạp của thuật toán :**  
 
 Thuật toán sử dụng 2 vòng for:
-+  Vòng for thứ nhất chạy từ index =  0 tới size – 2. 
-+ Vòng for thứ hai chạy từ index + 1 tới cuối mảng
++ Vòng for thứ nhất chạy từ i =  0 tới n – 2. 
++ Vòng for thứ hai chạy từ i + 1 tới cuối mảng
 Như vậy, đối với 1 dãy số gồm n phần tử , số lần duyệt qua từng phần tử trong mảng sẽ là : `(n-1) + (n-2) + … + 1 `. Vì vậy độ phức tạp của thuật toán trong tình huống tồi tệ nhất sẽ là : `O(n^2)`  
 
 **1.4. Nhận xét thuật toán**  
@@ -294,18 +294,18 @@ void HeapSort(int a[], int n) {
 - Tư tưởng của giải thuật xuất phát từ cơ sở Cây vun đống Max ( hay Cây vun đống Min). Một cách tương tự nhau, ta sẽ lựa chọn cây vun đống Max để minh họa giải thuật Sắp xếp vun đống
 - Cây vun đống Max ở đây được quan niệm là cây nhị phân hoàn chỉnh, tức với mỗi nút cha sẽ luôn bao gồm 2 con (trừ hàng ở độ sâu cuối cùng), và các con luôn được phân bố một cách trái nhất có thể. Do cây vun đống được đề xuất minh họa trong giải thuật này là Max Heap Tree, nên có thêm tính chất Maximum được thể hiện như sau : Nút cha phải lớn hơn hoặc bằng hai nút con ( còn các nút con cùng cấp thì không có ràng buộc với nhau). Như vậy, mỗi nhánh mà được đại diện bởi bất cứ nút nào đó trong cây cũng sẽ phải là một nhánh Max Heap.
 - Cây vun đống có thể được cài đặt sử dụng Mảng hoặc Danh sách Liên kết. Để đơn giản trong sự minh họa, chúng ta sẽ lựa chọn Mảng cho quá trình cài đặt giải thuật
-- Tiếp theo đó, ta sẽ làm gì với cây Max Heap Tree này, khi biết được một tính chất vô cùng quan trọng của nó : Giá trị của cha luôn lớn hơn hoặc bằng giá trị của mỗi con. Điều đó, cho thấy phần tử gốc sẽ là phần tử lớn nhất trong dãy. Ta tiến hành hoán đổi phần tử gốc với 1 phần tử cuối cùng của lá (nút cuối cùng), lúc này, nút lá (“thấp bé nhỏ con”) được đưa lên đầu (root, rễ cây), đồng thời tách biệt và cất giữ phần tử lớn nhất ở một nơi nào đó. Tại thời điểm này, cây hiện tại không còn mang tính chất Max Heap (bởi vì lá được đưa lên gốc có thể nhỏ hơn 2 con của nút cha bị thay thế). Tại đây ta cần phải tiến hành xây dựng một giải thuật mang tên updateHeapAt(...) giúp cập nhật lại cây trên để đưa nó trở về đúng dạng cây Max Heap Tree . Hàm này sẽ sử dụng tính chất quan trọng từ cây “bị sai lệch” trên, đó là : 2 nhánh con của phần tử gốc hiện tại vẫn mang tính chất Max Heap. Sau khi, đi qua hàm này, cây trên sẽ được cập nhật về đúng dạng Max Heap... Rồi ta lại hoán đổi gốc của cây với phần tử lá cuối cùng, đồng thời lại tách biệt phần tử lớn nhất ra khỏi cây, rồi lại cập nhật lại cây ... Các quá trình cứ diễn ra một cách tuần hoàn cho tới khi cây chỉ còn duy nhất một phần tử (đó cũng sẽ chính là phần tử nhỏ nhất trong dãy số ). .... Kết thúc giải thuật Heap Sort, chúng ta sẽ thu được một mảng dãy số đã được sắp xếp như ý muốn !
+- Tiếp theo đó, ta sẽ làm gì với cây Max Heap Tree này, khi biết được một tính chất vô cùng quan trọng của nó : Giá trị của cha luôn lớn hơn hoặc bằng giá trị của mỗi con. Điều đó, cho thấy phần tử gốc sẽ là phần tử lớn nhất trong dãy. Ta tiến hành hoán đổi phần tử gốc với 1 phần tử cuối cùng của lá (nút cuối cùng), lúc này, nút lá (“thấp bé nhỏ con”) được đưa lên đầu (root, rễ cây), đồng thời tách biệt và cất giữ phần tử lớn nhất ở một nơi nào đó. Tại thời điểm này, cây hiện tại không còn mang tính chất Max Heap (bởi vì lá được đưa lên gốc có thể nhỏ hơn 2 con của nút cha bị thay thế). Tại đây ta cần phải tiến hành xây dựng một giải thuật mang tên heapify(...) giúp cập nhật lại cây trên để đưa nó trở về đúng dạng cây Max Heap Tree . Hàm này sẽ sử dụng tính chất quan trọng từ cây “bị sai lệch” trên, đó là : 2 nhánh con của phần tử gốc hiện tại vẫn mang tính chất Max Heap. Sau khi, đi qua hàm này, cây trên sẽ được cập nhật về đúng dạng Max Heap... Rồi ta lại hoán đổi gốc của cây với phần tử lá cuối cùng, đồng thời lại tách biệt phần tử lớn nhất ra khỏi cây, rồi lại cập nhật lại cây ... Các quá trình cứ diễn ra một cách tuần hoàn cho tới khi cây chỉ còn duy nhất một phần tử (đó cũng sẽ chính là phần tử nhỏ nhất trong dãy số ). .... Kết thúc giải thuật Heap Sort, chúng ta sẽ thu được một mảng dãy số đã được sắp xếp như ý muốn !
 - Khi cài đặt cây Max Heap theo dạng mảng số, có một tính chất sau cần chú ý: 
   + LeftChildIndex = 2 * ParentIndex + 1
   + RightChildIndex = 2 * ParentIndex + 2
 - Vì input hay mỗi dãy số ban đầu (được lưu trữ dưới dạng mảng) là ngẫu nhiên, chưa được có tính chất Max Heap, vì thế ta cần có phải có một bước đầu để chuyển hóa cây trên thành một cây mang đặc điểm Max Heap ( thủ tục này được được tạo trong hàm heapSort(...) )
 - Như vậy, hàm heapSort sẽ bao quát những công việc sau : 
   + Khởi tạo một cây Max Heap Tree từ một dãy ngẫu nhiên
-  + Từ cây Max Heap Tree, tiến hành trích lấy phần tử lớn nhất ở root, và thay thế vị trí root bởi nút lá cuối cùng. Sau đó, gọi hàm updateHeapAt(...) cập nhật lại cây trên tại root mới đó, rồi lại trích lấy phần tử root, và thay thế vị trí root bởi lá,...Quá trình diễn ra một cách tương tự, cho tới khi cây chỉ còn 1 phần tử. Và phần tử đó sẽ là phần tử nhỏ nhất trong mảng. Kết quả, ta thu được một mảng gồm các số đã được sắp xếp tăng dần !  
+  + Từ cây Max Heap Tree, tiến hành trích lấy phần tử lớn nhất ở root, và thay thế vị trí root bởi nút lá cuối cùng. Sau đó, gọi hàm heapify(...) cập nhật lại cây trên tại root mới đó, rồi lại trích lấy phần tử root, và thay thế vị trí root bởi lá,...Quá trình diễn ra một cách tương tự, cho tới khi cây chỉ còn 1 phần tử. Và phần tử đó sẽ là phần tử nhỏ nhất trong mảng. Kết quả, ta thu được một mảng gồm các số đã được sắp xếp tăng dần !  
   
 **5.3. Độ phức tạp của giải thuật :**
 
-- Thủ tục updateHeapAt (...) có độ phức tạp là `O(log(n))` : Do số lần duyệt của thủ tục này cỡ bằng độ sâu của cây nhị phân
+- Thủ tục heapify (...) có độ phức tạp là `O(log(n))` : Do số lần duyệt của thủ tục này cỡ bằng độ sâu của cây nhị phân
 - Đối với thủ tục heapSort, ta có thể đánh giá độ phức tạp một cách tương đối như sau : 
   + Vòng for đầu tiên : `O(log(n/2) + log(n/2 + 1) + ... + log(n)) <= O(n.log(n))`
   + Vòng for thứ hai : `O(log(n) + log(n-1) + ... + log(1)) <= O(n.log(n))`
