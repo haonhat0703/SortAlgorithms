@@ -1,4 +1,4 @@
-//https://github.com/dungbachviet/SortingAlgorithms/blob/master/README.md
+https://github.com/dungbachviet/SortingAlgorithms/blob/master/README.md
 # 12 THUẬT TOÁN SẮP XẾP CƠ BẢN
 
 ### *Xin chào mọi người,* 
