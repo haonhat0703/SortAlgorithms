@@ -7,7 +7,7 @@ Trong bài viết đầu tay này, mình xin trình bày về 12 giải thuật 
 
 Với mỗi giải thuật, tớ sẽ cố gắng trình bày và làm rõ chúng theo bố cục với những nội chính sau : 
 + Tư tưởng của giải thuật
-+ Mã nguồn ( được minh họa trên một vài ngôn ngữ lập trình)
++ Mã nguồn ( được minh họa trên ngôn ngữ lập trình C/C++)
 + Độ phức tạp của thuật toán
 + Đưa ra nhận xét và đánh giá thuật toán.
 + So sánh với các giải thuật khác và Đưa ra giải pháp tối ưu cùng khả năng ứng dụng của bài toán trong thực tế cuộc sống.
